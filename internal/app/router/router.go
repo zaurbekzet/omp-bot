@@ -1,6 +1,7 @@
 package router
 
 import (
+	"github.com/ozonmp/omp-bot/internal/app/commands/logistic"
 	"log"
 	"runtime/debug"
 
@@ -43,6 +44,7 @@ type Router struct {
 	// security
 	// cinema
 	// logistic
+	logisticCommander Commander
 	// product
 	// education
 }
@@ -78,6 +80,7 @@ func NewRouter(
 		// security
 		// cinema
 		// logistic
+		logisticCommander: logistic.NewLogisticCommander(bot),
 		// product
 		// education
 	}
@@ -153,7 +156,7 @@ func (c *Router) handleCallback(callback *tgbotapi.CallbackQuery) {
 	case "cinema":
 		break
 	case "logistic":
-		break
+		c.logisticCommander.HandleCallback(callback, callbackPath)
 	case "product":
 		break
 	case "education":
@@ -224,7 +227,7 @@ func (c *Router) handleMessage(msg *tgbotapi.Message) {
 	case "cinema":
 		break
 	case "logistic":
-		break
+		c.logisticCommander.HandleCommand(msg, commandPath)
 	case "product":
 		break
 	case "education":
