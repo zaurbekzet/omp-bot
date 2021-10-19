@@ -10,7 +10,7 @@ import (
 func (c *LogisticLocationCommander) Delete(inputMsg *tgbotapi.Message) {
 	args := inputMsg.CommandArguments()
 
-	id, err := strconv.Atoi(args)
+	id, err := strconv.ParseUint(args, 10, 64)
 	if err != nil {
 		log.Printf("%s.Delete: wrong arguments: %s", logPrefix, args)
 		c.sendMessage(
@@ -21,7 +21,7 @@ func (c *LogisticLocationCommander) Delete(inputMsg *tgbotapi.Message) {
 		return
 	}
 
-	_, err = c.locationService.Remove(uint64(id))
+	_, err = c.locationService.Remove(id)
 	if err != nil {
 		log.Printf("%s.Delete: failed to delete location: %v", logPrefix, err)
 		c.sendMessage(inputMsg.Chat.ID, "Specified location does not exist", logPrefix+".Delete")

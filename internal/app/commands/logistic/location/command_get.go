@@ -10,7 +10,7 @@ import (
 func (c *LogisticLocationCommander) Get(inputMsg *tgbotapi.Message) {
 	args := inputMsg.CommandArguments()
 
-	id, err := strconv.Atoi(args)
+	id, err := strconv.ParseUint(args, 10, 64)
 	if err != nil {
 		log.Printf("%s.Get: wrong arguments: %s", logPrefix, args)
 		c.sendMessage(
@@ -21,7 +21,7 @@ func (c *LogisticLocationCommander) Get(inputMsg *tgbotapi.Message) {
 		return
 	}
 
-	location, err := c.locationService.Describe(uint64(id))
+	location, err := c.locationService.Describe(id)
 	if err != nil {
 		log.Printf("%s.Get: failed to get location: %v", logPrefix, err)
 		c.sendMessage(inputMsg.Chat.ID, "Requested location does not exist", logPrefix+".Get")
