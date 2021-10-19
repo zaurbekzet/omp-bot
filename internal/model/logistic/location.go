@@ -3,10 +3,10 @@ package logistic
 import "fmt"
 
 type Location struct {
-	ID        uint64
-	Latitude  float64
-	Longitude float64
-	Title     string
+	ID        uint64  `json:"id,omitempty"`
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+	Title     string  `json:"title"`
 }
 
 func (l Location) String() string {
