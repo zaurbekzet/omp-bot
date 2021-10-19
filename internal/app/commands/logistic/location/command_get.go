@@ -1,9 +1,10 @@
 package location
 
 import (
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"log"
 	"strconv"
+
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
 func (c *LogisticLocationCommander) Get(inputMsg *tgbotapi.Message) {

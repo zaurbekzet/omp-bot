@@ -2,6 +2,7 @@ package location
 
 import (
 	"fmt"
+
 	"github.com/ozonmp/omp-bot/internal/model/logistic"
 )
 

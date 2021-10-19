@@ -2,9 +2,10 @@ package location
 
 import (
 	"encoding/json"
+	"log"
+
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ozonmp/omp-bot/internal/model/logistic"
-	"log"
 )
 
 func (c *LogisticLocationCommander) New(inputMsg *tgbotapi.Message) {

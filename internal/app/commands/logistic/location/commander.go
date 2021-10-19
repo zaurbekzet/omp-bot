@@ -1,10 +1,11 @@
 package location
 
 import (
+	"log"
+
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ozonmp/omp-bot/internal/app/path"
 	service "github.com/ozonmp/omp-bot/internal/service/logistic/location"
-	"log"
 )
 
 const logPrefix = "LogisticLocationCommander"

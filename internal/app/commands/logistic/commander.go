@@ -1,11 +1,12 @@
 package logistic
 
 import (
+	"log"
+
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	locationCmd "github.com/ozonmp/omp-bot/internal/app/commands/logistic/location"
 	"github.com/ozonmp/omp-bot/internal/app/path"
 	locationSrv "github.com/ozonmp/omp-bot/internal/service/logistic/location"
-	"log"
 )
 
 type Commander interface {

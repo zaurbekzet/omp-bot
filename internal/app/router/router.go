@@ -1,12 +1,12 @@
 package router
 
 import (
-	"github.com/ozonmp/omp-bot/internal/app/commands/logistic"
 	"log"
 	"runtime/debug"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ozonmp/omp-bot/internal/app/commands/demo"
+	"github.com/ozonmp/omp-bot/internal/app/commands/logistic"
 	"github.com/ozonmp/omp-bot/internal/app/path"
 )
 
