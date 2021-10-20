@@ -1,6 +1,7 @@
 package location
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/ozonmp/omp-bot/internal/model/logistic"
@@ -40,19 +41,21 @@ func (s *DummyLocationService) List(cursor uint64, limit uint64) ([]logistic.Loc
 	length := uint64(len(s.locations))
 
 	if length == 0 {
-		return nil, fmt.Errorf("nothing to list")
+		return nil, ErrEmptyList
 	}
 
 	if cursor >= length {
 		return nil, fmt.Errorf("cursor %d is out of range [0, %d]", cursor, length-1)
 	}
 
+	var err error = nil
 	end := cursor + limit
-	if end > length || limit == 0 {
+	if end >= length || limit == 0 {
 		end = length
+		err = ErrEndOfList
 	}
 
-	return s.locations[cursor:end], nil
+	return s.locations[cursor:end], err
 }
 
 func (s *DummyLocationService) Create(location logistic.Location) (uint64, error) {
@@ -85,6 +88,11 @@ func (s *DummyLocationService) Remove(locationID uint64) (bool, error) {
 
 	return false, &LocationNotFoundError{locationID}
 }
+
+var (
+	ErrEmptyList = errors.New("empty locations list")
+	ErrEndOfList = errors.New("no more locations in list")
+)
 
 type LocationNotFoundError struct {
 	ID uint64

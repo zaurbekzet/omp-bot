@@ -8,6 +8,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ozonmp/omp-bot/internal/app/path"
+	"github.com/ozonmp/omp-bot/internal/service/logistic/location"
 )
 
 const defaultListLimit = 10
@@ -18,22 +19,27 @@ func (c *LogisticLocationCommander) List(inputMsg *tgbotapi.Message) {
 
 func (c *LogisticLocationCommander) listLimited(inputMsg *tgbotapi.Message, cursor uint64, limit uint64) {
 	locations, err := c.locationService.List(cursor, limit)
-	if err != nil {
+
+	if err == location.ErrEmptyList {
+		log.Printf("%s.List: %v", logPrefix, err)
+		c.sendMessage(inputMsg.Chat.ID, "There's nothing to list", logPrefix+".List")
+		return
+	} else if err != nil && err != location.ErrEndOfList {
 		log.Printf("%s.List: failed to list locations: %v", logPrefix, err)
-		//c.sendMessage(inputMsg.Chat.ID, "Error occurred", logPrefix+".List")
+		c.sendMessage(inputMsg.Chat.ID, "Error occurred", logPrefix+".List")
 		return
 	}
 
 	var sb strings.Builder
 
-	for _, location := range locations {
-		sb.WriteString(location.String())
+	for _, l := range locations {
+		sb.WriteString(l.String())
 		sb.WriteString("\n")
 	}
 
 	msg := tgbotapi.NewMessage(inputMsg.Chat.ID, sb.String())
 
-	if uint64(len(locations)) >= limit {
+	if err != location.ErrEndOfList {
 		serializedData, _ := json.Marshal(CallbackListData{
 			Cursor: cursor + limit,
 			Limit:  defaultListLimit,
