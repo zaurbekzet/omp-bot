@@ -2,6 +2,7 @@ package location
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
@@ -26,7 +27,7 @@ func (c *LogisticLocationCommander) Edit(inputMsg *tgbotapi.Message) {
 
 	if err := c.locationService.Update(location.ID, location); err != nil {
 		log.Printf("%s.Get: failed to update location: %v", logPrefix, err)
-		c.sendMessage(inputMsg.Chat.ID, "Specified location does not exist", logPrefix+".Edit")
+		c.sendMessage(inputMsg.Chat.ID, fmt.Sprintf("Error occurred: %v", err), logPrefix+".Edit")
 		return
 	}
 

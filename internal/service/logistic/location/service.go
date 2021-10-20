@@ -59,14 +59,22 @@ func (s *DummyLocationService) List(cursor uint64, limit uint64) ([]logistic.Loc
 }
 
 func (s *DummyLocationService) Create(location logistic.Location) (uint64, error) {
+	if err := location.Validate(); err != nil {
+		return 0, err
+	}
+
 	location.ID = s.nextID
 	s.nextID++
 	s.locations = append(s.locations, location)
 
-	return location.ID, nil // TODO: Что делать с ошибкой?
+	return location.ID, nil
 }
 
 func (s *DummyLocationService) Update(locationID uint64, location logistic.Location) error {
+	if err := location.Validate(); err != nil {
+		return err
+	}
+
 	for i := range s.locations {
 		if s.locations[i].ID == locationID {
 			s.locations[i] = location
